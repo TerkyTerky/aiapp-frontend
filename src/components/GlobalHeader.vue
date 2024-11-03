@@ -1,6 +1,6 @@
 <template>
   <a-row class="global-header">
-    <a-col :span="20">
+    <a-col :span="23">
       <a-menu mode="horizontal" :selected-keys="selectKey" @click="doMenuClick">
         <a-menu-item>
           <img src="@/assets/gpt.svg" alt="Logo" />
@@ -11,20 +11,24 @@
         </a-menu-item>
       </a-menu>
     </a-col>
-    <a-col>
-      <a-avatar class="avatar" shape="square">
-        <template #icon><UserOutlined /></template>
-      </a-avatar>
+    <a-col class="userLog" span="1" offset="0.4">
+      <div v-if="loginUserStore.loginUser.id">
+        {{ loginUserStore.loginUser.userName ?? "匿名用户" }}
+      </div>
+      <div v-else>
+        <a-button type="primary">登录</a-button>
+      </div>
     </a-col>
   </a-row>
 </template>
 
 <script lang="ts" setup>
-import { UserOutlined } from "@ant-design/icons-vue";
 import { routes } from "@/router/routes";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useLoginUserStore } from "@/store/userStore";
 
+const loginUserStore = useLoginUserStore();
 const router = useRouter();
 
 const doMenuClick = ({ key }: { key: string }) => {
@@ -44,13 +48,7 @@ router.afterEach((to, from, failure) => {
   height: 64px;
   padding: 0 16px;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
+  background-color: white;
 }
 
 .site-title {
@@ -58,7 +56,7 @@ router.afterEach((to, from, failure) => {
   margin-left: 16px;
 }
 
-.avatar {
-  margin-left: auto;
+.userLog {
+  background-color: white;
 }
 </style>
