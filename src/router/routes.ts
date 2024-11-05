@@ -2,7 +2,7 @@ import HomeView from "@/views/HomeView.vue";
 import { RouteRecordRaw } from "vue-router";
 import UserLayout from "@/layouts/UserLayout.vue";
 import UserLoginView from "@/views/UserLoginView.vue";
-import UserRegisterView from "@/views/userRegisterView.vue";
+import UserRegisterView from "@/views/UserRegisterView.vue";
 import BasicLayout from "@/layouts/BasicLayout.vue";
 
 export const routes: Array<RouteRecordRaw> = [
@@ -17,7 +17,7 @@ export const routes: Array<RouteRecordRaw> = [
         component: HomeView,
       },
       {
-        path: "about",
+        path: "/about",
         name: "about",
         component: () =>
           import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
@@ -30,12 +30,12 @@ export const routes: Array<RouteRecordRaw> = [
     component: UserLayout,
     children: [
       {
-        path: "login",
+        path: "/user/login",
         name: "login",
         component: UserLoginView,
       },
       {
-        path: "register",
+        path: "/user/register",
         name: "register",
         component: UserRegisterView,
       },

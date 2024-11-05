@@ -1,6 +1,0 @@
-<template>
-  <div class="about">
-    <h1>This is register page</h1>
-  </div>
-</template>
-<script setup></script>

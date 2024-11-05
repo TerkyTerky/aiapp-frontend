@@ -12,6 +12,7 @@ export const useLoginUserStore = defineStore("loginUser", () => {
     const res = await getLoginUserUsingGet();
     if (res.data.code === 0 && res.data.data) {
       loginUser.value = res.data.data;
+      console.log(loginUser.value);
     }
   }
 

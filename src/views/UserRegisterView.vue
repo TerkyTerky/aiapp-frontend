@@ -1,9 +1,9 @@
 <template>
-  <h2 style="margin-bottom: 16px">用户登录</h2>
+  <h2 style="margin-bottom: 16px">用户注册</h2>
   <a-form
     :model="formState"
-    name="normal_login"
-    class="login-form"
+    name="normal_register"
+    class="register-form"
     @submit="handleSubmit"
   >
     <a-form-item
@@ -30,6 +30,20 @@
       </a-input-password>
     </a-form-item>
 
+    <a-form-item
+      label="CheckPassword"
+      name="checkPassword"
+      :rules="[
+        { required: true, message: 'Please input your password again!' },
+      ]"
+    >
+      <a-input-password v-model:value="formState.checkPassword">
+        <template #prefix>
+          <LockOutlined class="site-form-item-icon" />
+        </template>
+      </a-input-password>
+    </a-form-item>
+
     <a-form-item>
       <a-button
         :disabled="disabled"
@@ -37,10 +51,8 @@
         html-type="submit"
         class="login-form-button"
       >
-        Log in
+        Register
       </a-button>
-      Or
-      <a href="/user/register">Register now!</a>
     </a-form-item>
   </a-form>
 </template>
@@ -50,36 +62,39 @@ import { computed, reactive } from "vue";
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 import API from "@/api";
 import { useRouter } from "vue-router";
-import { useLoginUserStore } from "@/store/userStore";
-import { userLoginUsingPost } from "@/api/userController";
+import { userRegisterUsingPost } from "@/api/userController";
 import { message } from "ant-design-vue";
 
 interface FormState {
   userAccount?: string;
   userPassword?: string;
+  checkPassword?: string;
 }
 
 const formState = reactive<FormState>({
   userAccount: "",
   userPassword: "",
-} as API.UserLoginRequest);
+  checkPassword: "",
+} as API.UserRegisterRequest);
 
 const router = useRouter();
-const loginUserStore = useLoginUserStore();
 
 const handleSubmit = async () => {
-  const res = await userLoginUsingPost(formState);
+  const res = await userRegisterUsingPost(formState);
   if (res.data.code === 0) {
-    await loginUserStore.fetchLoginUser();
-    message.success("登录成功");
-    await router.push({ path: "/", replace: true });
+    message.success("注册成功");
+    await router.push({ path: "/user/login", replace: true });
   } else {
-    message.error("登录失败" + res.data.message);
+    message.error("注册失败" + res.data.message);
   }
 };
 
 const disabled = computed(() => {
-  return !(formState.userAccount && formState.userPassword);
+  return !(
+    formState.userAccount &&
+    formState.userPassword &&
+    formState.checkPassword
+  );
 });
 </script>
 
